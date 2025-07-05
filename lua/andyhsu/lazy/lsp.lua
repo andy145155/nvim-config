@@ -179,7 +179,7 @@ return {
                         },
                         on_attach = function(client, bufnr)
                             -- Enable completion triggered by <c-x><c-o>
-                            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+                            vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
                             
                             -- Terraform specific keymaps
                             require("andyhsu.keymaps").setup_terraform_keymaps(bufnr)

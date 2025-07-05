@@ -80,13 +80,22 @@ return {
             })
             
             require("lspconfig")["yamlls"].setup(cfg)
+            
+            -- Disable folding for YAML files
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = { "yaml", "yml" },
+                callback = function()
+                    vim.opt_local.foldenable = false  -- Disable folding
+                    vim.opt_local.foldlevel = 99      -- Keep everything expanded
+                end,
+            })
         end,
     },
     
-    -- Better YAML folding
+    -- YAML file settings (no folding)
     {
-        "pedrohdz/vim-yaml-folds",
-        ft = { "yaml", "yml" },
+        "pedrohdz/vim-yaml-folds", 
+        enabled = false,  -- Disable YAML folding plugin
     },
     
     -- YAML snippets for common patterns

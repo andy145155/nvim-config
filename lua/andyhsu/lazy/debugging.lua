@@ -9,7 +9,6 @@ return {
             "nvim-telescope/telescope-dap.nvim",
             
             -- Language specific debug adapters
-            "mfussenegger/nvim-dap-python",
             "leoluz/nvim-dap-go",
             "jbyuki/one-small-step-for-vimkind",
             
@@ -108,7 +107,6 @@ return {
         config = function()
             require("mason-nvim-dap").setup({
                 ensure_installed = {
-                    "python",
                     "bash",
                     "codelldb",
                 },

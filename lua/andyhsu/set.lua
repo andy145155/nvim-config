@@ -27,4 +27,18 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
+-- Ensure filetype detection is enabled
+vim.cmd("filetype plugin indent on")
+
+-- Python-specific settings
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python",
+    callback = function()
+        vim.bo.tabstop = 4
+        vim.bo.shiftwidth = 4
+        vim.bo.softtabstop = 4
+        vim.bo.expandtab = true
+    end,
+})
+
 

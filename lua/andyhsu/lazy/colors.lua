@@ -10,7 +10,6 @@ end
 return {
     "rebelot/kanagawa.nvim",
     config = function()
-        ColorMyPencils()  -- Apply the theme and transparency
+        ColorMyPencils() -- Apply the theme and transparency
     end,
 }
-

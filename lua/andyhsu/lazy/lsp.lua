@@ -26,7 +26,16 @@ return {
                 lua = { "stylua" },
                 bash = { "shfmt" },
                 sh = { "shfmt" },
-            }
+            },
+            format_on_save = {
+                timeout_ms = 500,
+                lsp_fallback = true,
+            },
+            formatters = {
+                shfmt = {
+                    prepend_args = { "-i", "2", "-ci" },
+                },
+            },
         })
         local cmp = require('cmp')
         local cmp_lsp = require("cmp_nvim_lsp")

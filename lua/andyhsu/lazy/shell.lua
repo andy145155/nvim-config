@@ -1,15 +1,5 @@
 return {
-    -- Shell script formatting and linting
-    {
-        "z0mbix/vim-shfmt",
-        ft = { "sh", "bash", "zsh" },
-        config = function()
-            -- Format on save
-            vim.g.shfmt_fmt_on_save = 1
-            -- Use 2 spaces for indentation
-            vim.g.shfmt_extra_args = "-i 2 -ci"
-        end,
-    },
+    -- Shell script formatting is now handled by conform.nvim in lsp.lua
     
     -- Better shell script detection
     {

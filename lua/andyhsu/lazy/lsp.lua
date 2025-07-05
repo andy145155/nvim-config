@@ -111,29 +111,7 @@ return {
                     }
                 end,
 
-                ["yamlls"] = function()
-                    local lspconfig = require("lspconfig")
-                    lspconfig.yamlls.setup {
-                        capabilities = capabilities,
-                        settings = {
-                            yaml = {
-                                schemas = {
-                                    -- CircleCI schema
-                                    ["https://json.schemastore.org/circleciconfig.json"] = ".circleci/config.yml",
-                                    -- GitHub Actions schemas
-                                    ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
-                                    ["https://json.schemastore.org/github-action.json"] = "action.{yml,yaml}",
-                                    -- Kubernetes schemas
-                                    ["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.0-standalone-strict/all.json"] = "/*.k8s.yaml",
-                                },
-                                format = { enable = true },
-                                validate = true,
-                                completion = true,
-                                hover = true,
-                            },
-                        },
-                    }
-                end,
+                -- yamlls is now configured via yaml-companion in yaml.lua
 
                 ["bashls"] = function()
                     local lspconfig = require("lspconfig")

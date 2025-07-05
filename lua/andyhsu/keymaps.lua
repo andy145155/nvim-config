@@ -113,7 +113,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- ========================================
--- YAML/CI
+-- YAML
 -- ========================================
 map("n", "<leader>ys", "<cmd>Telescope yaml_schema<cr>", { desc = "Select YAML schema" })
 

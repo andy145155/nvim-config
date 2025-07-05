@@ -94,20 +94,7 @@ return {
                 dapui.close()
             end
             
-            -- Debugging keymaps
-            vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
-            vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debug: Step Over" })
-            vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Debug: Step Into" })
-            vim.keymap.set("n", "<F12>", dap.step_out, { desc = "Debug: Step Out" })
-            vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Debug: Toggle breakpoint" })
-            vim.keymap.set("n", "<leader>dB", function()
-                dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-            end, { desc = "Debug: Set conditional breakpoint" })
-            vim.keymap.set("n", "<leader>dr", dap.repl.open, { desc = "Debug: Open REPL" })
-            vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Debug: Run last" })
-            vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "Debug: Toggle UI" })
-            vim.keymap.set("n", "<leader>de", dapui.eval, { desc = "Debug: Evaluate" })
-            vim.keymap.set("v", "<leader>de", dapui.eval, { desc = "Debug: Evaluate selection" })
+            -- Debugging keymaps are now in centralized keymaps.lua
         end,
     },
     

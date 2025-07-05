@@ -14,10 +14,7 @@ return {
                 auto_refresh = true,
             })
         end,
-        keys = {
-            { "<leader>vs", "<cmd>VenvSelect<cr>", desc = "Select Python VirtualEnv" },
-            { "<leader>vc", "<cmd>VenvSelectCached<cr>", desc = "Select Cached Python VirtualEnv" },
-        },
+        -- Keymaps are now in centralized keymaps.lua
     },
     
     -- Python debugging
@@ -32,18 +29,7 @@ return {
             local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
             require("dap-python").setup(path)
             
-            -- Python specific debugging keymaps
-            vim.keymap.set("n", "<leader>dpr", function()
-                require("dap-python").test_method()
-            end, { desc = "Debug Python method" })
-            
-            vim.keymap.set("n", "<leader>dpc", function()
-                require("dap-python").test_class()
-            end, { desc = "Debug Python class" })
-            
-            vim.keymap.set("v", "<leader>dps", function()
-                require("dap-python").debug_selection()
-            end, { desc = "Debug Python selection" })
+            -- Python debugging keymaps are now in centralized keymaps.lua
         end,
     },
     
@@ -70,9 +56,7 @@ return {
                 },
             })
             
-            vim.keymap.set("n", "<leader>pd", function()
-                require("neogen").generate()
-            end, { desc = "Generate Python docstring" })
+            -- Docstring keymaps are now in centralized keymaps.lua
         end,
     },
     
@@ -96,17 +80,7 @@ return {
                 },
             })
             
-            vim.keymap.set("n", "<leader>pt", function()
-                require("neotest").run.run()
-            end, { desc = "Run nearest Python test" })
-            
-            vim.keymap.set("n", "<leader>pT", function()
-                require("neotest").run.run(vim.fn.expand("%"))
-            end, { desc = "Run Python test file" })
-            
-            vim.keymap.set("n", "<leader>po", function()
-                require("neotest").output.open({ enter = true })
-            end, { desc = "Show Python test output" })
+            -- Testing keymaps are now in centralized keymaps.lua
         end,
     },
 } 

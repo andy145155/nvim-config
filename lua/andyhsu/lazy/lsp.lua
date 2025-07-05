@@ -204,11 +204,7 @@ return {
                             vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
                             
                             -- Terraform specific keymaps
-                            local opts = { noremap=true, silent=true, buffer=bufnr }
-                            vim.keymap.set('n', '<leader>ti', ':!terraform init<CR>', opts, { desc = "Terraform init" })
-                            vim.keymap.set('n', '<leader>tv', ':!terraform validate<CR>', opts, { desc = "Terraform validate" })
-                            vim.keymap.set('n', '<leader>tp', ':!terraform plan<CR>', opts, { desc = "Terraform plan" })
-                            vim.keymap.set('n', '<leader>tf', ':!terraform fmt<CR>', opts, { desc = "Terraform format" })
+                            require("andyhsu.keymaps").setup_terraform_keymaps(bufnr)
                         end,
                     }
                 end,
@@ -219,21 +215,7 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(args)
-                local opts = { buffer = args.buf }
-                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts, { desc = "Show hover documentation" })
-                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts, { desc = "Go to definition" })
-                vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts, { desc = "Go to declaration" })
-                vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts, { desc = "Go to implementation" })
-                vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts, { desc = "Go to type definition" })
-                vim.keymap.set("n", "gr", vim.lsp.buf.references, opts, { desc = "Find references" })
-                vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, opts, { desc = "Show signature help" })
-                vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opts, { desc = "Rename symbol" })
-                vim.keymap.set({"n", "x"}, "<F3>", vim.lsp.buf.format, opts, { desc = "Format document" })
-                vim.keymap.set("n", "<F4>", vim.lsp.buf.code_action, opts, { desc = "Code actions" })
-                
-                vim.keymap.set("n", "gl", vim.diagnostic.open_float, opts, { desc = "Show diagnostic" })
-                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts, { desc = "Previous diagnostic" })
-                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts, { desc = "Next diagnostic" })
+                require("andyhsu.keymaps").setup_lsp_keymaps(args.buf)
             end,
         })
 

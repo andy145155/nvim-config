@@ -42,8 +42,7 @@ return {
             
             require("lspconfig")["yamlls"].setup(cfg)
             
-            -- Keymaps for schema selection
-            vim.keymap.set("n", "<leader>ys", "<cmd>Telescope yaml_schema<cr>", { desc = "Select YAML schema" })
+            -- YAML keymaps are now in centralized keymaps.lua
         end,
     },
     
@@ -55,9 +54,7 @@ return {
         config = function()
             require("gh-actions").setup({})
         end,
-        keys = {
-            { "<leader>ga", "<cmd>GhActions<cr>", desc = "Open GitHub Actions viewer" },
-        },
+        -- GitHub Actions keymaps are now in centralized keymaps.lua
     },
     
     -- Better YAML folding

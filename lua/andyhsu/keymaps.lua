@@ -46,6 +46,16 @@ map("n", "Q", "<nop>", { desc = "Disable Q" })
 map("i", "<C-c>", "<Esc>", { desc = "Exit insert mode" })
 
 -- ========================================
+-- COMMENTING (Comment.nvim)
+-- ========================================
+-- gcc - Comment/uncomment current line
+-- gc<motion> - Comment/uncomment using motion (e.g., gc5j for 5 lines down)
+-- gcA - Add comment at end of line
+-- gco - Add comment below current line
+-- gcO - Add comment above current line
+-- Visual mode: gc - Comment/uncomment selection
+
+-- ========================================
 -- LSP & CODE INTELLIGENCE
 -- ========================================
 M.setup_lsp_keymaps = function(bufnr)
@@ -66,6 +76,7 @@ M.setup_lsp_keymaps = function(bufnr)
     map("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("error", opts, { desc = "Previous diagnostic" }))
     map("n", "]d", vim.diagnostic.goto_next, vim.tbl_extend("error", opts, { desc = "Next diagnostic" }))
     map("n", "<leader>e", vim.diagnostic.open_float, vim.tbl_extend("error", opts, { desc = "Show diagnostic" }))
+    map("n", "<leader>q", vim.diagnostic.setloclist, vim.tbl_extend("error", opts, { desc = "Open diagnostic list" }))
 end
 
 -- ========================================
@@ -93,5 +104,11 @@ end
 -- YAML
 -- ========================================
 map("n", "<leader>ys", "<cmd>Telescope yaml_schema<cr>", { desc = "Select YAML schema" })
+
+-- ========================================
+-- DIAGNOSTICS (GLOBAL)
+-- ========================================
+map("n", "<leader>da", "<cmd>Telescope diagnostics<cr>", { desc = "All diagnostics" })
+map("n", "<leader>db", "<cmd>Telescope diagnostics bufnr=0<cr>", { desc = "Buffer diagnostics" })
 
 return M 

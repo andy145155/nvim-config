@@ -1,35 +1,30 @@
-Hey @SeniorEng, I’ve been iterating on our Windows-2019 AMI bake pipeline and wanted your feedback on this minimal-effort Slack notification approach—based on our current baking architecture, it’s the simplest way to get immediate visibility:
+# --- inside the OnDelete branch ---
 
-yaml
-Copy
-Edit
-- slack/notify:
-    event: always
-    channel: "#infra-ami-updates"
-    custom: |
-      {% if build_status == "success" %}
-      *✅ Windows 2019 AMI Bake Succeeded*  
-      • *AMI:* `<https://console.aws.amazon.com/ec2/v2/home?region=${AWS_REGION}#Images:search=${WINDOWS_2019_DYNAMIC_AMI}|${WINDOWS_2019_DYNAMIC_AMI}>`  
-      • *Project Version:* `${PROJECT_VERSION_WINDOWS_2019}`  
-      • *Build:* `<${CIRCLE_BUILD_URL}|#${CIRCLE_BUILD_NUM}>`
-      {% else %}
-      *❌ Windows 2019 AMI Bake Failed*  
-      • *Build:* `<${CIRCLE_BUILD_URL}|#${CIRCLE_BUILD_NUM}>`  
-      • *Known fix PRs:*  
-        {% assign prs = env.LAST_FIX_PRS | split: "," -%}
-        {% for pr in prs -%}
-        <https://github.com/our-org/our-repo/pull/{{ pr }}|PR #{{ pr }}>{% if forloop.last == false %}, {% endif %}
-        {% endfor %}
-  
-      _If this is a new failure, please add your PR number to `LAST_FIX_PRS` so it shows up next time._
-      {% endif %}
-Why this approach?
+# 1) build a clean label selector: key1=val1,key2=val2
+selectors="$(echo "$match_labels" \
+  | jq -r 'to_entries | map("\(.key)=\(.value)") | join(",")')"
 
-✅ Success posts AMI link, project version, and build URL.
+echo "[INFO] selector for $res_kind/$res_ns/$res_name: $selectors"
 
-❌ Failures list all known fix PRs and remind the team to update the list.
+# 2) list target pods in the SAME namespace as the resource
+ondelete_res="$(kubectl get pods -n "$res_ns" -l "$selectors" -o json | jq -c '.items[]')"
 
-Least effort: a single slack/notify step at the end of our existing build-windows-2019 job.
+pod_count="$(wc -l <<< "$ondelete_res" | tr -d ' ')"
+echo "[INFO] will restart $pod_count pod(s) in ns=$res_ns for selector: $selectors"
 
-Since you mentioned in yesterday’s meeting you were still investigating some edge cases, please let me know if there’s anything this doesn’t cover or any extra info you’d like surfaced (e.g. bake duration, packer logs, tags). Thanks!
-— Andy
+while IFS= read -r pod_json; do
+  ns="$(jq -r '.metadata.namespace' <<< "$pod_json")"   # should equal $res_ns
+  name="$(jq -r '.metadata.name'      <<< "$pod_json")"
+
+  echo "[INFO] Deleting pod: $ns/$name"
+  kubectl delete pod -n "$ns" "$name" --wait=false
+
+  echo "[INFO] Waiting for delete: $ns/$name"
+  kubectl wait -n "$ns" --for=delete "pod/$name" --timeout=5m
+
+  echo "[INFO] Waiting for replacement Ready (ns=$ns, selector=$selectors)"
+  kubectl wait -n "$ns" -l "$selectors" --for=condition=Ready pod --timeout=10m
+
+  echo "[INFO] Replacement for $ns/$name is Ready"
+done <<< "$ondelete_res"
+
